@@ -1,45 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Grid, Card, CardContent, CardMedia, Typography, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import { useProductContext } from '../ProductContext';
+import Navbar from './Navbar';
 
 function Home() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [search, setSearch] = useState('');
+  const { filteredProducts } = useProductContext();
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
 
-  useEffect(() => {
-    // Fetch the first 30 products from the API
-    axios.get('https://dummyjson.com/products')
-      .then(response => {
-        setProducts(response.data.products.slice(0, 90));
-        setFilteredProducts(response.data.products.slice(0, 90));
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  }, []); // Empty dependency array to ensure the effect runs only once on mount
+  // Calculate indexes for the current page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  useEffect(() => {
-    // Update filteredProducts when search value changes
-    const filtered = products.filter(product =>
-      product.title.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [search, products]);
-
- 
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Product List
-      </Typography>
-      
-      <Grid container spacing={2}>
-        {filteredProducts.map(product => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+    <div style={{display:"flex", flexDirection:"column"}}>
+      <Navbar/>
+      <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:""}}>
+      <Grid container spacing={2} margin="20px">
+        {currentProducts.map(product => (
+          <Grid item key={product.id} xs={12} sm={6} md={4} lg={4}>
+            {/* Adjust the xs, sm, md, and lg props above to control the number of cards per row */}
             <Card>
               <CardMedia
                 component="img"
-                height="140"
+                height="240"
+                width="250"
                 alt={product.title}
                 src={product.thumbnail}
               />
@@ -52,6 +42,16 @@ function Home() {
           </Grid>
         ))}
       </Grid>
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+          Previous Page
+        </Button>
+        <span style={{ margin: '0 10px' }}>Page {currentPage}</span>
+        <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastProduct >= filteredProducts.length}>
+          Next Page
+        </Button>
+      </div>
+    </div>
     </div>
   );
 }

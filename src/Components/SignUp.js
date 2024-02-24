@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   IconButton,
   Input,
   InputAdornment,
   InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function SignUp() {
   const [formData, setFormData] = useState({
-    email: "",
     username: "",
+    mobile: "",
+    email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -38,90 +38,92 @@ function SignUp() {
     <Box
       display="flex"
       justifyContent="center"
+      alignItems="center"
+      height="100vh"
+     
       sx={{
-        backgroundImage: "linear-gradient(0deg, #fff4c4, #fff)",
+        background:
+          "linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(255,190,203,1) 100%)",
       }}>
       <Box
         display="flex"
-        width="70%"
-        fontFamily="montserrat, sans-serif"
-        backgroundColor="white"
-        height="100vh"
-        justifyContent="center">
-        <form style={{ width: "80%", marginTop: "80px" }}>
-          <h2>Sign Up</h2>
-          <h3 style={{ marginTop: "20px" }}>
-            Hi new buddy, let's get you started <br /> with the bewakoofi!
-          </h3>
-          <TextField
+        flexDirection="column"
+        alignItems="center"
+        width="40%"
+        height="85vh"
+        mb="1rem"
+        padding="2rem"
+        borderRadius="15px"
+        boxShadow="0px 0px 10px rgba(0, 0, 0, 0.1)"
+        sx={{
+          background:
+            "linear-gradient(299deg, rgba(185,196,251,1) 0%, rgba(250,183,197,0.4543067226890757) 133%)",
+        }}>
+        <Typography variant="h4" mb="4rem" mt="2rem" fontWeight={600}>
+          Sign Up
+        </Typography>
+        <TextField
+          required
+          onChange={handleChange}
+          fullWidth
+          sx={{ mb: "2rem" }}
+          label="Name"
+          name="username"
+          variant="outlined"
+        />
+        <TextField
+          required
+          fullWidth
+          sx={{ mb: "2rem" }}
+          label="Mobile"
+          name="mobile"
+          variant="outlined"
+        />
+        <TextField
+          required
+          onChange={handleChange}
+          fullWidth
+          sx={{ mb: "2rem" }}
+          label="Email Id"
+          name="email"
+          variant="outlined"
+        />
+        <FormControl fullWidth variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <Input
             required
-            onChange={handleChange}
-            fullWidth
-            sx={{ marginTop: "30px" }}
-            label="Name"
-            name="username"
-            variant="standard"
+            type={showPassword ? "text" : "password"}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
-          <TextField
-            required
-            fullWidth
-            sx={{ marginTop: "30px" }}
-            label="Mobile"
-            name="mobile"
-            variant="standard"
-          />
-          <TextField
-            required
-            onChange={handleChange}
-            fullWidth
-            sx={{ marginTop: "30px" }}
-            label="Email Id"
-            name="email"
-            variant="standard"
-          />
-          <FormControl fullWidth sx={{ marginTop: "30px" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              required
-              type={showPassword && "text"}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              endAdornment={
-                showPassword && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}>
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            />
-          </FormControl>
-          <FormControlLabel
-            sx={{ marginTop: "30px" }}
-            control={<Checkbox defaultChecked />}
-            label="I want to receive order updates on Whatsapp"
-          />
-
-          <Button
-            onClick={handleSignUp}
-            variant="contained"
-            sx={{
-              marginTop: "40px",
-              width: "100%",
-              height: "50px",
-              backgroundColor: "#989898",
-              boxShadow: "none",
-            }}>
-            PROCEED
-          </Button>
-        </form>
+        </FormControl>
+        <Button
+          onClick={handleSignUp}
+          fullWidth
+          variant="contained"
+          sx={{
+            marginTop: "4rem",
+            height: "3rem",
+            backgroundColor: "#989898",
+            "&:hover": {
+              backgroundColor: "#878787",
+            },
+          }}>
+          PROCEED
+        </Button>
       </Box>
     </Box>
   );

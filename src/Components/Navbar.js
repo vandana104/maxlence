@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Avatar,
@@ -8,15 +8,38 @@ import {
   Menu,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useProductContext } from "../ProductContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const {
+    search,
+    setSearch,
+    filteredProducts,
+    setFilteredProducts,
+    searchResults,
+    setSearchResults,
+  } = useProductContext();
   const [avatarMenuAnchorEl, setAvatarMenuAnchorEl] = useState(null);
   const userName = localStorage.getItem("userName") || "";
+
+  useEffect(() => {
+    // Fetch the first 30 products from the API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://dummyjson.com/products");
+        const data = await response.json();
+        setFilteredProducts(data.products.slice(0, 30)); // Fix this line
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [setFilteredProducts]);
 
   const handleAvatarClick = (event) => {
     setAvatarMenuAnchorEl(event.currentTarget);
@@ -37,10 +60,9 @@ function Navbar() {
     const searchValue = e.target.value.toLowerCase();
     setSearch(searchValue);
 
-    // Implement your search logic here (example with an array of items)
-    const allItems = []; // Replace with your actual data
-    const filteredResults = allItems.filter((item) =>
-      item.name.toLowerCase().includes(searchValue)
+    // Implement your search logic here
+    const filteredResults = filteredProducts.filter((product) =>
+      product.title.toLowerCase().includes(searchValue),
     );
     setSearchResults(filteredResults);
   };
@@ -51,21 +73,20 @@ function Navbar() {
       justifyContent="space-around"
       alignItems="center"
       borderBottom="1px solid grey"
-      height="70px"
-      width="100%"
-    >
+      height="55px"
+      sx={{background:"black"}}
+x      width="100%">
       <Box>
-        <img
+        <Typography
           onClick={() => navigate("/")}
-          src="https://images.bewakoof.com/web/ic-desktop-bwkf-trademark-logo.svg"
-          alt="Bewkoof"
-          style={{ width: "80%", cursor: "pointer" }}
-        />
+          style={{ color:"white",fontWeight:"bold" ,width: "80%", cursor: "pointer" }}>
+          Home
+        </Typography>
       </Box>
       <Box display="flex">
         <TextField
           sx={{
-            height: "56px",
+            // height: "50px",
             paddingLeft: "0px !important",
             marginRight: "10px",
             background: "#eaeaea",
@@ -96,16 +117,14 @@ function Navbar() {
             <Menu
               anchorEl={avatarMenuAnchorEl}
               open={Boolean(avatarMenuAnchorEl)}
-              onClose={handleAvatarClose}
-            >
+              onClose={handleAvatarClose}>
               {userName ? (
                 <div>
                   <MenuItem
                     onClick={() => {
                       handleAvatarClose();
                       navigate("/");
-                    }}
-                  >
+                    }}>
                     Hello.. {userName}
                   </MenuItem>
                   <MenuItem onClick={handleLogOut}>Logout</MenuItem>
@@ -113,8 +132,7 @@ function Navbar() {
                     onClick={() => {
                       handleAvatarClose();
                       navigate("/account");
-                    }}
-                  >
+                    }}>
                     My Account
                   </MenuItem>
                 </div>
@@ -124,16 +142,14 @@ function Navbar() {
                     onClick={() => {
                       handleAvatarClose();
                       navigate("/login");
-                    }}
-                  >
+                    }}>
                     Login
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
                       handleAvatarClose();
                       navigate("/signup");
-                    }}
-                  >
+                    }}>
                     Signup
                   </MenuItem>
                 </div>
@@ -148,7 +164,7 @@ function Navbar() {
           {searchResults.map((result) => (
             <div key={result.id}>
               {/* Display your search result items */}
-              {result.name}
+              {result.title}
             </div>
           ))}
         </Box>

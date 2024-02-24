@@ -7,9 +7,13 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Box, Button, Link, Typography } from "@mui/material";
+import Home from "./Home"; // Import your Home component
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -17,110 +21,124 @@ function Login() {
     event.preventDefault();
   };
 
+  const handleLogin = () => {
+    // Check if both email and password are filled
+    if (email && password) {
+      // Set loggedIn to true if both fields are filled
+      setLoggedIn(true);
+    } else {
+      // You can add error handling or show a message here
+      console.log("Please fill in both email and password fields.");
+    }
+  };
+
   return (
-    <Box sx={{ margin: 0, padding: 0 }}>
+    loggedIn ? (
+      <Home />
+    ) : (
       <Box
-        display="flex"
-        justifyContent="center"
-        height="664px"
-        width="100%"
         sx={{
-          backgroundImage: "linear-gradient(0deg, #fff4c4, #fff)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background:
+            "linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(255,190,203,1) 100%)",
         }}
       >
         <Box
-          display="flex"
-          justifyContent="center"
-          width="70%"
-          height="640px"
-          backgroundColor="white"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "40%",
+            height: "60vh",
+            padding: "2rem",
+            borderRadius: "15px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            background:
+              "linear-gradient(299deg, rgba(185,196,251,1) 0%, rgba(250,183,197,0.4543067226890757) 133%)",
+          }}
         >
-          <form
-            style={{
-              container: {
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+          <Typography
+            variant="h4"
+            sx={{ mb: "4rem", mt: "2rem", fontWeight: 600 }}
+          >
+            Log into your account
+          </Typography>
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            sx={{ mb: "2rem" }}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <FormControl fullWidth variant="outlined">
+            <Input
+              placeholder="Enter your password"
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              marginTop: "4rem",
+              height: "3rem",
+              backgroundColor: "#4caf50",
+              "&:hover": {
+                backgroundColor: "#45a049",
               },
             }}
+            onClick={handleLogin}
           >
-            <h2
-              style={{
-                marginTop: "110px",
-                fontFamily: "montserrat-bold,sans-serif",
-              }}
-            >
-              Log into your account
-            </h2>
-            <TextField
-              fullWidth
-              sx={{ marginTop: "60px" }}
-              label="Email"
-              variant="standard"
-            />
-            <FormControl
-              width="100%"
-              fullWidth
-              variant="standard"
-              sx={{ marginTop: "60px", mb: "10px" }}
-            >
-              <Input
-                id="standard-adornment-password"
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+            Login
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "1rem",
+            }}
+          >
             <Link
-              to="/forgot"
-              style={{
-                marginTop: "50px",
-                textDecoration: "none",
-                fontFamily: "montserrat,sans-serif",
-              }}
-            >
-              Forgot Password ?
-            </Link>
-            <Button
-              variant="contained"
-              className="login-button"
+              href="/forgot"
               sx={{
-                marginTop: "40px",
-                width: "100%",
-                height: "50px",
-                backgroundColor: "#989898",
-                boxShadow: "none",
+                textDecoration: "none",
+                fontWeight: 600,
+                fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
               }}
             >
-              Login
-            </Button>
-            <Box
-              display="flex"
-              width="100%"
-              justifyContent="center"
-              mt="40px"
+              Forgot Password?
+            </Link>
+            <Link
+              href="/signup"
+              sx={{
+                textDecoration: "none",
+                fontWeight: 600,
+                fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+              }}
             >
-              <Typography>Create new account ?</Typography>
-              <Link
-                style={{ textDecoration: "none", marginLeft: "5px" }}
-                href="/signup"
-              >
-                Signup
-              </Link>
-            </Box>
-          </form>
+              Sign Up
+            </Link>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    )
   );
 }
 
