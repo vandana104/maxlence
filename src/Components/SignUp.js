@@ -30,7 +30,6 @@ function SignUp() {
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   const handleSignUp = () => {
-    // Perform any client-side validation or UI-related actions here
     console.log("Signing up:", formData);
   };
 

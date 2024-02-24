@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Box, Button, Link, Typography } from "@mui/material";
-import Home from "./Home"; // Import your Home component
+import Home from "./Home"; 
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,13 +22,10 @@ function Login() {
   };
 
   const handleLogin = () => {
-    // Check if both email and password are filled
     if (email && password) {
-      // Set loggedIn to true if both fields are filled
       setLoggedIn(true);
     } else {
-      // You can add error handling or show a message here
-      console.log("Please fill in both email and password fields.");
+      alert("Please fill in both email and password fields.");
     }
   };
 

@@ -7,8 +7,6 @@ function Home() {
   const { filteredProducts } = useProductContext();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
-
-  // Calculate indexes for the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -24,7 +22,6 @@ function Home() {
       <Grid container spacing={2} margin="20px">
         {currentProducts.map(product => (
           <Grid item key={product.id} xs={12} sm={6} md={4} lg={4}>
-            {/* Adjust the xs, sm, md, and lg props above to control the number of cards per row */}
             <Card>
               <CardMedia
                 component="img"

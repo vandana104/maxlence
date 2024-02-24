@@ -1,4 +1,3 @@
-// ProductContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -8,7 +7,7 @@ export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState([]);  // Add this line
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     axios.get('https://dummyjson.com/products')
@@ -31,8 +30,8 @@ export const ProductProvider = ({ children }) => {
     filteredProducts,
     search,
     setSearch,
-    searchResults,  // Add this line
-    setSearchResults,  // Add this line
+    searchResults, 
+    setSearchResults,  
   };
 
   return (

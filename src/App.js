@@ -2,7 +2,6 @@ import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
 import { Route, Routes, useLocation } from "react-router-dom";
  import "./App.css";
-
 import Home from "./Components/Home";
 
 function App() {

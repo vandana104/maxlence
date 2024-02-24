@@ -16,7 +16,6 @@ import { useProductContext } from "../ProductContext";
 function Navbar() {
   const navigate = useNavigate();
   const {
-    search,
     setSearch,
     filteredProducts,
     setFilteredProducts,
@@ -27,12 +26,11 @@ function Navbar() {
   const userName = localStorage.getItem("userName") || "";
 
   useEffect(() => {
-    // Fetch the first 30 products from the API
     const fetchProducts = async () => {
       try {
         const response = await fetch("https://dummyjson.com/products");
         const data = await response.json();
-        setFilteredProducts(data.products.slice(0, 30)); // Fix this line
+        setFilteredProducts(data.products.slice(0, 30)); 
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,7 +58,7 @@ function Navbar() {
     const searchValue = e.target.value.toLowerCase();
     setSearch(searchValue);
 
-    // Implement your search logic here
+  
     const filteredResults = filteredProducts.filter((product) =>
       product.title.toLowerCase().includes(searchValue),
     );
@@ -86,7 +84,6 @@ x      width="100%">
       <Box display="flex">
         <TextField
           sx={{
-            // height: "50px",
             paddingLeft: "0px !important",
             marginRight: "10px",
             background: "#eaeaea",
@@ -158,12 +155,10 @@ x      width="100%">
           </div>
         </Box>
       </Box>
-      {/* Display search results */}
       {searchResults.length > 0 && (
         <Box>
           {searchResults.map((result) => (
             <div key={result.id}>
-              {/* Display your search result items */}
               {result.title}
             </div>
           ))}
